@@ -40,7 +40,20 @@ function getGrade(percentage) {
   return "Keep practicing";
 }
 
+/**
+ * Formats a non-negative time in seconds, rounding partial seconds up.
+ */
+function formatTimeLeft(seconds) {
+  if (typeof seconds !== "number" || !Number.isFinite(seconds)) {
+    throw new TypeError("seconds must be a finite number");
+  }
+  if (seconds < 0) {
+    throw new RangeError("seconds must not be negative");
+  }
+  return `⏱ ${Math.ceil(seconds)}s`;
+}
+
 // Lets Node.js tests load this file. Browsers ignore this block.
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { shuffle, isCorrect, calculatePercentage, getGrade };
+  module.exports = { shuffle, isCorrect, calculatePercentage, getGrade, formatTimeLeft };
 }

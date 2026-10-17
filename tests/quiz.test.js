@@ -2,7 +2,13 @@
 // Run them with:  npm test
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
-const { shuffle, isCorrect, calculatePercentage, getGrade } = require("../src/quiz.js");
+const {
+  shuffle,
+  isCorrect,
+  calculatePercentage,
+  getGrade,
+  formatTimeLeft,
+} = require("../src/quiz.js");
 
 test("isCorrect returns true for the right answer", () => {
   assert.equal(isCorrect({ answer: 2 }, 2), true);
@@ -29,4 +35,28 @@ test("shuffle keeps every item and does not change the original array", () => {
 
 test("getGrade gives an A for exactly 90%", () => {
   assert.equal(getGrade(90), "A");
+});
+
+test("formatTimeLeft formats positive seconds", () => {
+  assert.equal(formatTimeLeft(12), "⏱ 12s");
+});
+
+test("formatTimeLeft formats zero seconds", () => {
+  assert.equal(formatTimeLeft(0), "⏱ 0s");
+});
+
+test("formatTimeLeft rounds partial seconds up", () => {
+  assert.equal(formatTimeLeft(4.2), "⏱ 5s");
+});
+
+test("formatTimeLeft rejects null", () => {
+  assert.throws(() => formatTimeLeft(null), TypeError);
+});
+
+test("formatTimeLeft rejects a missing value", () => {
+  assert.throws(() => formatTimeLeft(), TypeError);
+});
+
+test("formatTimeLeft rejects negative seconds", () => {
+  assert.throws(() => formatTimeLeft(-1), RangeError);
 });
