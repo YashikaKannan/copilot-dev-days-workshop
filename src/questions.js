@@ -36,6 +36,91 @@ const QUESTIONS = [
     ],
     answer: 1,
   },
+  {
+    question: "Which Git command stages a specific file?",
+    options: ["git add <file>", "git commit <file>", "git push <file>", "git fetch <file>"],
+    answer: 0,
+  },
+  {
+    question: "Which Git command records staged changes in repository history?",
+    options: ["git status", "git commit", "git diff", "git init"],
+    answer: 1,
+  },
+  {
+    question: "What does `git status` show?",
+    options: [
+      "The remote repository's issue list",
+      "The latest release notes",
+      "The state of the working tree and staging area",
+      "A list of all repository contributors",
+    ],
+    answer: 2,
+  },
+  {
+    question: "Which GitHub feature tracks tasks, enhancements, and bugs?",
+    options: ["Discussions", "Actions", "Projects", "Issues"],
+    answer: 3,
+  },
+  {
+    question: "Which file commonly explains how to contribute to a repository?",
+    options: ["CONTRIBUTING.md", "LICENSE", "package-lock.json", "CHANGELOG"],
+    answer: 0,
+  },
+  {
+    question: "Which Git command downloads remote changes without merging them?",
+    options: ["git pull", "git fetch", "git push", "git checkout"],
+    answer: 1,
+  },
+  {
+    question: "What is a fork on GitHub?",
+    options: [
+      "A snapshot of a repository's issue list",
+      "A branch protected from deletion",
+      "A personal copy of another user's repository",
+      "A release built from a tag",
+    ],
+    answer: 2,
+  },
+  {
+    question: "Which file typically lists a Node.js project's scripts and dependencies?",
+    options: ["README.md", "tsconfig.json", "index.html", "package.json"],
+    answer: 3,
+  },
+  {
+    question: "What does `git merge` do?",
+    options: [
+      "Combines changes from different branches",
+      "Deletes a remote repository",
+      "Stages files for a commit",
+      "Creates a copy of a repository",
+    ],
+    answer: 0,
+  },
+  {
+    question: "Which Copilot feature suggests code as you type?",
+    options: ["Repository insights", "Inline suggestions", "Pull request reviews", "GitHub Issues"],
+    answer: 1,
+  },
+  {
+    question: "What file defines a GitHub Actions workflow?",
+    options: [".github/workflows/main.yml", "Dockerfile", "package.json", "README.md"],
+    answer: 0,
+  },
+  {
+    question: "Which event triggers a workflow when code is pushed to the main branch?",
+    options: ["workflow_dispatch", "push", "issues", "release"],
+    answer: 1,
+  },
+  {
+    question: "What is the purpose of actions/checkout in a workflow?",
+    options: [
+      "Runs the unit tests",
+      "Checks out the repository so the workflow can access project files",
+      "Publishes the app to npm",
+      "Creates a new branch",
+    ],
+    answer: 1,
+  },
 ];
 
 // Lets Node.js tests load this file. Browsers ignore this block.
