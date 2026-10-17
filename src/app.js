@@ -2,14 +2,9 @@
 
 const QUESTION_TIME_LIMIT_SECONDS = 15;
 const QUESTION_TIME_LIMIT_MS = QUESTION_TIME_LIMIT_SECONDS * 1000;
-const state = {
-  questions: [],
-  current: 0,
-  score: 0,
-  timerId: null,
-  deadline: null,
-  questionResolved: false,
-};
+let state = createQuiz([]);
+let timerId = null;
+let deadline = null;
 
 const startScreen = document.getElementById("start-screen");
 const quizScreen = document.getElementById("quiz-screen");
@@ -30,25 +25,22 @@ function showScreen(screenToShow) {
 }
 
 function stopQuestionTimer() {
-  if (state.timerId !== null) {
-    clearInterval(state.timerId);
-    state.timerId = null;
+  if (timerId !== null) {
+    clearInterval(timerId);
+    timerId = null;
   }
-  state.deadline = null;
+  deadline = null;
 }
 
 function startQuiz() {
   stopQuestionTimer();
-  state.questions = shuffle(QUESTIONS);
-  state.current = 0;
-  state.score = 0;
+  state = createQuiz(shuffle(QUESTIONS));
   showScreen(quizScreen);
   renderQuestion();
 }
 
 function renderQuestion() {
   stopQuestionTimer();
-  state.questionResolved = false;
   const question = state.questions[state.current];
   progressText.textContent = `Question ${state.current + 1} of ${state.questions.length}`;
   questionText.textContent = question.question;
@@ -70,10 +62,10 @@ function renderQuestion() {
 }
 
 function startQuestionTimer() {
-  state.deadline = Date.now() + QUESTION_TIME_LIMIT_MS;
+  deadline = Date.now() + QUESTION_TIME_LIMIT_MS;
 
   function updateCountdown() {
-    const remainingMs = state.deadline - Date.now();
+    const remainingMs = deadline - Date.now();
     const remainingSeconds = Math.ceil(Math.max(0, remainingMs) / 1000);
     timeLeftText.textContent = formatTimeLeft(remainingSeconds);
     timeLeftText.classList.toggle("urgent", remainingSeconds <= 5);
@@ -84,24 +76,24 @@ function startQuestionTimer() {
   }
 
   updateCountdown();
-  state.timerId = setInterval(updateCountdown, 250);
+  timerId = setInterval(updateCountdown, 250);
 }
 
 function selectAnswer(selectedIndex, selectedButton) {
   if (state.questionResolved) return;
-  if (Date.now() >= state.deadline) {
+  if (Date.now() >= deadline) {
     timeExpired();
     return;
   }
 
-  state.questionResolved = true;
-  stopQuestionTimer();
   const question = state.questions[state.current];
+  const result = answerQuestion(state, selectedIndex);
+  state = result.state;
+  stopQuestionTimer();
   const buttons = optionsList.querySelectorAll("button");
   buttons.forEach((button) => (button.disabled = true));
 
-  if (isCorrect(question, selectedIndex)) {
-    state.score++;
+  if (result.correct) {
     selectedButton.classList.add("correct");
     feedbackText.textContent = getFeedbackMessage("correct");
   } else {
@@ -117,7 +109,7 @@ function selectAnswer(selectedIndex, selectedButton) {
 function timeExpired() {
   if (state.questionResolved) return;
 
-  state.questionResolved = true;
+  state = skipQuestion(state);
   stopQuestionTimer();
   const question = state.questions[state.current];
   const buttons = optionsList.querySelectorAll("button");
@@ -129,8 +121,8 @@ function timeExpired() {
 }
 
 function nextQuestion() {
-  state.current++;
-  if (state.current < state.questions.length) {
+  state = advanceQuestion(state);
+  if (!isQuizFinished(state)) {
     renderQuestion();
   } else {
     showResults();

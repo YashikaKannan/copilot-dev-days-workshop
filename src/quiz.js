@@ -69,6 +69,59 @@ function formatTimeLeft(seconds) {
   return `⏱ ${Math.ceil(seconds)}s`;
 }
 
+/**
+ * Creates the initial state for a quiz.
+ */
+function createQuiz(questions) {
+  return {
+    questions: [...questions],
+    current: 0,
+    score: 0,
+    questionResolved: false,
+  };
+}
+
+/**
+ * Resolves the current question and returns the updated state and outcome.
+ */
+function answerQuestion(state, selectedIndex) {
+  const question = state.questions[state.current];
+  const correct = isCorrect(question, selectedIndex);
+  return {
+    state: {
+      ...state,
+      score: state.score + (correct ? 1 : 0),
+      questionResolved: true,
+    },
+    correct,
+  };
+}
+
+/**
+ * Marks the current question resolved without changing the score.
+ */
+function skipQuestion(state) {
+  return { ...state, questionResolved: true };
+}
+
+/**
+ * Advances to the next question.
+ */
+function advanceQuestion(state) {
+  return {
+    ...state,
+    current: state.current + 1,
+    questionResolved: false,
+  };
+}
+
+/**
+ * Returns whether the quiz has no more questions.
+ */
+function isQuizFinished(state) {
+  return state.current >= state.questions.length;
+}
+
 // Lets Node.js tests load this file. Browsers ignore this block.
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
@@ -78,5 +131,10 @@ if (typeof module !== "undefined" && module.exports) {
     getGrade,
     getFeedbackMessage,
     formatTimeLeft,
+    createQuiz,
+    answerQuestion,
+    skipQuestion,
+    advanceQuestion,
+    isQuizFinished,
   };
 }
