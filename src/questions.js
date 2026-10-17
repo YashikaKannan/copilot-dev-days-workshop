@@ -102,24 +102,44 @@ const QUESTIONS = [
     answer: 1,
   },
   {
-    question: "What file defines a GitHub Actions workflow?",
-    options: [".github/workflows/main.yml", "Dockerfile", "package.json", "README.md"],
+    question: "Which file is commonly used to define a GitHub Actions workflow?",
+    options: [".github/workflows/ci.yml", "Dockerfile", ".gitignore", "README.md"],
     answer: 0,
   },
   {
-    question: "Which event triggers a workflow when code is pushed to the main branch?",
-    options: ["workflow_dispatch", "push", "issues", "release"],
+    question: "Which YAML key triggers a workflow on code pushes?",
+    options: ["run:", "on:", "jobs:", "steps:"],
     answer: 1,
   },
   {
-    question: "What is the purpose of actions/checkout in a workflow?",
+    question: "What does a GitHub Actions job do?",
     options: [
-      "Runs the unit tests",
-      "Checks out the repository so the workflow can access project files",
-      "Publishes the app to npm",
-      "Creates a new branch",
+      "Runs one or more steps in an environment",
+      "Deletes the repository",
+      "Creates a branch",
+      "Copies files to a server",
     ],
-    answer: 1,
+    answer: 0,
+  },
+  {
+    question: "What does the `on:` key in a workflow do?",
+    options: [
+      "It installs dependencies",
+      "It defines environment variables",
+      "It specifies which events trigger the workflow",
+      "It creates a Docker image",
+    ],
+    answer: 2,
+  },
+  {
+    question: "Which action is commonly used to check out the repository contents in a workflow job?",
+    options: [
+      "actions/setup-node@v4",
+      "docker/build-push-action@v5",
+      "actions/cache@v4",
+      "actions/checkout@v4",
+    ],
+    answer: 3,
   },
 ];
 
