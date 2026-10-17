@@ -7,6 +7,7 @@ const {
   isCorrect,
   calculatePercentage,
   getGrade,
+  getFeedbackMessage,
   formatTimeLeft,
 } = require("../src/quiz.js");
 
@@ -37,6 +38,33 @@ test("getGrade gives an A for exactly 90%", () => {
   assert.equal(getGrade(90), "A");
 });
 
+test("getGrade gives a B for exactly 75%", () => {
+  assert.equal(getGrade(75), "B");
+});
+
+test("getGrade gives a C for exactly 50%", () => {
+  assert.equal(getGrade(50), "C");
+});
+
+test("getGrade uses the lower grade just below each boundary", () => {
+  assert.equal(getGrade(89), "B");
+  assert.equal(getGrade(74), "C");
+  assert.equal(getGrade(49), "Keep practicing");
+});
+
+test("getFeedbackMessage returns the message for each question outcome", () => {
+  assert.equal(getFeedbackMessage("correct"), "Correct!");
+  assert.equal(
+    getFeedbackMessage("incorrect"),
+    "Not quite. The correct answer is highlighted."
+  );
+  assert.equal(getFeedbackMessage("timeout"), "Time's up!");
+});
+
+test("getFeedbackMessage rejects an unknown outcome", () => {
+  assert.throws(() => getFeedbackMessage("unknown"), TypeError);
+});
+
 test("formatTimeLeft formats positive seconds", () => {
   assert.equal(formatTimeLeft(12), "⏱ 12s");
 });
@@ -49,6 +77,10 @@ test("formatTimeLeft rounds partial seconds up", () => {
   assert.equal(formatTimeLeft(4.2), "⏱ 5s");
 });
 
+test("formatTimeLeft rounds any positive fraction up to one second", () => {
+  assert.equal(formatTimeLeft(0.1), "⏱ 1s");
+});
+
 test("formatTimeLeft rejects null", () => {
   assert.throws(() => formatTimeLeft(null), TypeError);
 });
@@ -59,4 +91,9 @@ test("formatTimeLeft rejects a missing value", () => {
 
 test("formatTimeLeft rejects negative seconds", () => {
   assert.throws(() => formatTimeLeft(-1), RangeError);
+});
+
+test("formatTimeLeft rejects non-finite seconds", () => {
+  assert.throws(() => formatTimeLeft(Infinity), TypeError);
+  assert.throws(() => formatTimeLeft(NaN), TypeError);
 });

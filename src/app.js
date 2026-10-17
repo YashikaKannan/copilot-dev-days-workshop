@@ -103,11 +103,11 @@ function selectAnswer(selectedIndex, selectedButton) {
   if (isCorrect(question, selectedIndex)) {
     state.score++;
     selectedButton.classList.add("correct");
-    feedbackText.textContent = "Correct!";
+    feedbackText.textContent = getFeedbackMessage("correct");
   } else {
     selectedButton.classList.add("wrong");
     buttons[question.answer].classList.add("correct");
-    feedbackText.textContent = "Not quite. The correct answer is highlighted.";
+    feedbackText.textContent = getFeedbackMessage("incorrect");
   }
 
   nextButton.hidden = false;
@@ -123,7 +123,7 @@ function timeExpired() {
   const buttons = optionsList.querySelectorAll("button");
   buttons.forEach((button) => (button.disabled = true));
   buttons[question.answer].classList.add("correct");
-  feedbackText.textContent = "Time's up!";
+  feedbackText.textContent = getFeedbackMessage("timeout");
   nextButton.hidden = false;
   nextButton.focus();
 }
